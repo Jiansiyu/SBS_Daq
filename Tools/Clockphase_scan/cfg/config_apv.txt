@@ -1,0 +1,747 @@
+	
+version = "0.35";  // mandatory
+logfile = "out/Daq.log"; // mandatory
+loglevel = 4;	// 0=none, 1=normal, 2=debug, 3=verbose, 4=very verbose ...
+date = "28/03/2012"; // date format: DD/MM/YYYY
+time = "12:00:00";   // time format: hh:mm:ss
+
+// @includeDir ...
+
+@include "/home/daq/ben/mpd/libsrc4.0/rol/cfg/config_apv_default.txt"
+
+bus: // interface to the MPD
+(
+  {
+  controller = "gexvb"; // v1718, v2718, sis3104, eth, fiber 
+
+  mpd:
+  ( // list of mpds
+
+  // Chamber J0 (mpd 0 to 3)
+
+
+    // --- mpd 0
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 3; 
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+	{ adc = 0; i2c = 0; }, // j0m0y1 - rigidx5 (J0-M12: Left-Y-5slot-BP)
+	{ adc = 1; i2c = 1; },
+	{ adc = 2; i2c = 2; },
+	{ adc = 3; i2c = 3; },
+	{ adc = 4; i2c = 4; }, 
+
+	{ adc = 5; i2c = 8; }, // j0m1y1 - rigidx5 (J0-M9: Left-Y-5slot-BP)
+	{ adc = 6; i2c = 9; },
+	{ adc = 7; i2c = 10; },
+	{ adc = 8; i2c = 11; },
+	{ adc = 9; i2c = 12; },
+
+	{ adc = 10; i2c =16; }, // j0m2y1 - rigidx5 (J0-M15: Left-Y-5slot-BP)
+	{ adc = 11; i2c = 17; },
+	{ adc = 12; i2c = 18; },
+	{ adc = 13; i2c = 19; },
+	{ adc = 14; i2c = 20; }
+      );
+    },
+
+    //end MPD 0
+
+    // --- mpd 1
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 4; 
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+	// 2018-06-05 Siyu configuration add patch 
+
+	//{adc = 0; i2c = 4;},
+	{adc = 1; i2c = 3;},   // j0m0x1 - flex-v1 inverted (J0-M12: Left-X-4slot-BP shortH_27-to-longH_8)
+	{adc = 2; i2c = 2;},
+	{adc = 3; i2c = 1;},
+	{adc = 4; i2c = 0;},
+	
+	//{adc = 5; i2c = 12;},
+	{adc = 6; i2c = 11;},
+	{adc = 7; i2c = 10;},
+	{adc = 8; i2c = 9;},
+	{adc = 9; i2c = 8;},
+	
+	{adc = 10; i2c = 16;},
+	{adc = 11; i2c = 17;},
+	{adc = 12; i2c = 18;},
+	{adc = 13; i2c = 19;}
+
+
+// 2018-04-12 Kondo configuration without patch pannel, with HDMI adapter
+
+//	{ adc = 7; i2c = 0; }, // j0m0x1 - flex-v1 inverted (J0-M12: Left-X-4slot-BP shortH_27-to-longH_8)
+//	{ adc = 6; i2c = 1; },
+//	{ adc = 5; i2c = 2; },
+//	{ adc = 4; i2c = 3; },
+//	{ adc = 11 i2c = 8; }, // j0m1x1 - flex-v1 inverted (J0-M9: Left-X-4slot-BP shortH_25-to-longH_5)
+//	{ adc = 10 i2c = 9; },
+//	{ adc = 9; i2c = 10; },
+//	{ adc = 8; i2c = 11; },
+//	{ adc = 12; i2c = 16; }, // j0m2x1 - rigidx5  (J0-M15: Left-X-4slot-BP shortH_36-to-longH_11)
+//	{ adc = 13; i2c = 17; },
+//	{ adc = 14; i2c = 18; },
+// 	{ adc = 15; i2c = 19; }
+
+      );
+    },
+    //end MPD 4 
+
+
+    // --- mpd 2
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 6; 
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+
+//	{ adc = 0; i2c = 8; }, // j0m1y0 - rigidx5 (J0-M9: Right-Y-5slot-BP)
+//	{ adc = 1; i2c = 9; },
+//	{ adc = 2; i2c = 10; },
+//	{ adc = 3; i2c = 11; }
+//	{ adc = 9; i2c = 12; }
+	
+	{ adc = 0; i2c = 0; }, // j0m0y0 - rigidx5 (J0-M12: Right-Y-5slot-BP)
+	{ adc = 1; i2c = 1; },
+	{ adc = 2; i2c = 2; },
+	{ adc = 3; i2c = 3; },
+	{ adc = 4; i2c = 4; }, 
+	
+	{ adc = 5; i2c = 8; }, // j0m1y0 - rigidx5 (J0-M9: Right-Y-5slot-BP)
+	{ adc = 6; i2c = 9; },
+	{ adc = 7; i2c = 10; },
+	{ adc = 8; i2c = 11; },
+	{ adc = 9; i2c = 12; },
+	
+	{ adc = 10; i2c =16; }, // j0m2y0 - rigidx5 (J0-M15: Right-Y-5slot-BP)
+	{ adc = 11; i2c = 17; },
+	{ adc = 12; i2c = 18; },
+	{ adc = 13; i2c = 19; },
+	{ adc = 14; i2c = 20; }
+
+      );
+    },
+    //end MPD 2
+
+
+    // --- mpd 3
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 7;  // 171204: two cables are bad, need to be replaced (disable mpd for the moment)
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+// 2018-04-12 Kondo coinfiguration without patch pannel, with HDMI adapter
+//
+    apv:
+      (
+
+	{adc = 0; i2c = 0;},   // j0m0x1 - flex-v1 inverted (J0-M12: Left-X-4slot-BP shortH_27-to-longH_8)
+	{adc = 1; i2c = 1;},
+	{adc = 2; i2c = 2;},
+	{adc = 3; i2c = 3;},
+	
+	//{adc = 5; i2c = 12;},
+	{adc = 6; i2c = 11;},
+	{adc = 7; i2c = 10;},
+	{adc = 8; i2c = 9;},
+	{adc = 9; i2c = 8;},
+	
+	//{adc = 10; i2c = 20;},
+	{adc = 11; i2c = 19;},
+	{adc = 12; i2c = 18;},
+	{adc = 13; i2c = 17;},
+	{adc = 14; i2c = 16;}
+
+      );
+    },
+    //end MPD 3
+
+
+
+  // Chamber J1 (mpd 4 to 7)
+    // --- mpd 4
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+        rotary = 8;        
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration 
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) ** USING 3+3 m cable instead of 3+20, only HERE **
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+	{ adc = 0; i2c = 0; }, // j1m0y1 - rigidx5 (J1-M13: Left-Y-5slot-BP)
+	{ adc = 1; i2c = 1; },
+	{ adc = 2; i2c = 2; },
+	{ adc = 3; i2c = 3; },
+	{ adc = 4; i2c = 4; },
+
+	{ adc = 5; i2c = 8; }, // j1m1y1 - rigidx5 (J1-M14: Left-Y-5slot-BP)
+	{ adc = 6; i2c = 9; },
+	{ adc = 7; i2c = 10; },
+	{ adc = 8; i2c = 11; },
+	{ adc = 9; i2c = 12; },
+
+	{ adc = 10; i2c = 16; }, // j1m2y1 - rigidx5 (J1-M10: Left-Y-5slot-BP)
+	{ adc = 11; i2c = 17; }, // PROBLEM WITH THIS APV
+//	{ adc = 12; i2c = 18; },
+//	{ adc = 13; i2c = 19; },
+	{ adc = 14; i2c = 20; }
+      );
+    },
+    //end MPD 4
+
+    // --- mpd 5
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 10; 
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+// 2018-04-12 Kondo coinfiguration without patch pannel, with HDMI adapter
+// 
+	{ adc = 7; i2c = 0; }, // j1m0x1 - flex-v1 inverted (J1-M13: Left-X-4slot-BP shortH_18-to-longH_ha04)
+	{ adc = 6; i2c = 1; },
+	{ adc = 5; i2c = 2; },
+	{ adc = 4; i2c = 3; },
+
+	{ adc = 11 i2c = 8; }, // j1m1x1 - flex-v1 inverted (J1-M14: Left-X-4slot-BP shortH_20-to-longH_24)
+	{ adc = 10 i2c = 9; },
+	{ adc = 9; i2c = 10; },
+	{ adc = 8; i2c = 11; },
+
+	{ adc = 12; i2c = 16; }, // j1m2x1 - rigidx5  (J1-M10: Left-X-4slot-BP shortH_14-to-longH_21)
+	{ adc = 13; i2c = 17; },
+	{ adc = 14; i2c = 18; },
+  	{ adc = 15; i2c = 19; }
+      );
+    },
+    //end MPD 5
+
+    // --- mpd 6
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 12;
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+	{ adc = 0; i2c = 0; }, // j1m0y0 - rigidx5 (J1-M13: Right-Y-5slot-BP)
+	{ adc = 1; i2c = 1; },
+	{ adc = 2; i2c = 2; },
+	{ adc = 3; i2c = 3; },
+	{ adc = 4; i2c = 4; }, 
+	{ adc = 5; i2c = 8; }, // j1m1y0 - rigidx5 (J1-M13: Right-Y-5slot-BP)
+	{ adc = 6; i2c = 9; },
+	{ adc = 7; i2c = 10; },
+	{ adc = 8; i2c = 11; },
+	{ adc = 9; i2c = 12; },
+	{ adc = 10; i2c =16; }, // j1m2y0 - rigidx5 (J1-M13: Right-Y-5slot-BP)
+	{ adc = 11; i2c = 17; },
+	{ adc = 12; i2c = 18; },
+	{ adc = 13; i2c = 19; },
+	{ adc = 14; i2c = 20; }
+      );
+    },
+    //end MPD 6
+
+    // --- mpd 7
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 13; 
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 18;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+// 2018-04-12 Kondo coinfiguration without patch pannel, with HDMI adapter
+//
+	{ adc = 4; i2c = 0; }, // j1m0x0 - rigidx5 (J1-M13: Right-X-4slot-BP shortH_11 to longH_ha07)
+	{ adc = 5; i2c = 1; },
+	{ adc = 6; i2c = 2; },
+	{ adc = 7; i2c = 3; },
+	{ adc = 11; i2c = 8; }, // j1m1x0 - flex-v1 inverted (J1-M14: Right-X-4slot-BP shortH_12 to longH_14)
+	{ adc = 10; i2c = 9; },
+	{ adc = 9; i2c = 10; },
+	{ adc = 8; i2c = 11; },
+	{ adc = 15; i2c = 16; }, // j1m2x0 - flex-v1 inverted  (J1-M10: Right-X-4slot-BP shortH_13 to longH_16)
+	{ adc = 14; i2c = 17; },
+	{ adc = 13; i2c = 18; },
+  	{ adc = 12; i2c = 19; }
+      );
+    },
+    //end MPD 7
+
+
+  // Chamber J2 (mpd 8 to 11)
+    // --- mpd 8
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 15; 
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 36;	 // 0..63 (0.5 ns step) 
+          //clock_phase = 36;	 // 0..63 (0.5 ns step) ** USING 3+3 m cable instead of 3+20, only HERE **
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 36;	 // 0..63 (0.5 ns step) 
+          //clock_phase = 36;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+	{ adc = 0; i2c = 0; }, // j2m0y1 - rigidx5 (J2-M1: Left-Y-5slot-BP)
+	{ adc = 1; i2c = 1; },
+	{ adc = 2; i2c = 2; },
+	{ adc = 3; i2c = 3; },
+	{ adc = 4; i2c = 4; }, 
+	{ adc = 5; i2c = 8; }, // j2m1y1 - rigidx5 (J2-M0: Left-Y-5slot-BP)
+	{ adc = 6; i2c = 9; },
+	{ adc = 7; i2c = 10; },
+	{ adc = 8; i2c = 11; },
+	{ adc = 9; i2c = 12; },
+	{ adc = 10; i2c =16; }, // j2m2y1 - rigidx5 (J2-M4: Left-Y-5slot-BP)
+	{ adc = 11; i2c = 17; },
+	{ adc = 12; i2c = 18; },
+	{ adc = 13; i2c = 19; },
+	{ adc = 14; i2c = 20; }
+      );
+    },
+    //end MPD 8
+
+    // --- mpd 9
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 16; 
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 36;	 // 0..63 (0.5 ns step) 
+          //clock_phase = 36;	 // 0..63 (0.5 ns step) time offset between
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 36;	 // 0..63 (0.5 ns step) 
+          //clock_phase = 36;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+// 2018-04-12 Kondo coinfiguration without patch pannel, with HDMI adapter
+// 
+	{ adc = 4; i2c = 0; }, // j2m0x1 - flex-v2 not inverted (J2-M1: Left-X-4slot-BP shortH_24-to-longH_ha31)
+	{ adc = 5; i2c = 1; },
+	{ adc = 6; i2c = 2; },
+	{ adc = 7; i2c = 3; },
+	{ adc = 8 i2c = 8; }, // j2m1x1 - flex-v2 not inverted (J2-M0: Left-X-4slot-BP shortH_23-to-longH_ha18)
+	{ adc = 9 i2c = 9; },
+	{ adc = 10; i2c = 10; },
+	{ adc = 11; i2c = 11; },
+	{ adc = 12; i2c = 16; }, // j2m2x1 - rigidx5  (J1-M4: Left-X-4slot-BP shortH_2-to-longH_ha01)
+	{ adc = 13; i2c = 17; },
+	{ adc = 14; i2c = 18; },
+  	{ adc = 15; i2c = 19; }
+      );
+    },
+    //end MPD 9
+
+    // --- mpd 10
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 18;
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 36;	 // 0..63 (0.5 ns step) 
+          //clock_phase = 44;	 // 0..63 (0.5 ns step) time offset between
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 36;	 // 0..63 (0.5 ns step) 
+          //clock_phase = 44;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+	{ adc = 0; i2c = 0; }, // j2m0y0 - rigidx5  (J2-M1: Right-Y-5slot-BP)
+	{ adc = 1; i2c = 1; },
+	{ adc = 2; i2c = 2; },
+	{ adc = 3; i2c = 3; },
+	{ adc = 4; i2c = 4; }, 
+	{ adc = 5; i2c = 8; }, // j2m1y0 - rigidx5 (J2-M0: Right-Y-5slot-BP)
+	{ adc = 6; i2c = 9; },
+	{ adc = 7; i2c = 10; },
+	{ adc = 8; i2c = 11; },
+	{ adc = 9; i2c = 12; },
+	{ adc = 10; i2c =16; }, // j2m2y0 - rigidx5 (J2-M4: Right-Y-5slot-BP)
+	{ adc = 11; i2c = 17; },
+	{ adc = 12; i2c = 18; },
+	{ adc = 13; i2c = 19; },
+	{ adc = 14; i2c = 20; }
+      );
+    },
+    //end MPD 10
+         
+    // --- mpd 11
+    {
+     // rotary = 0; // for ssp - optical line 1-8
+      rotary = 19; 
+
+      fir_enable= 0;
+      fir_coeff = [10990, -2130, -169, -232, -147, -123, -98, -191, -88, 333, -3, 34, 17, 14, 11, 7]; // FIR filter coefficients 16bits (/2^13 to get "real" values)
+
+    i2c: // I2C section, configuration
+      {
+        speed = 1000;// (x10^-5 s) period of the i2c clock
+        timeout = 200; // number of retries before timeout
+      };
+    adc:
+      (
+	{
+          gain = [5, 5, 5, 5, 5, 5, 5, 5];	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none";  // none, sync, deskew, ramp
+          clock_phase = 36;	 // 0..63 (0.5 ns step) 
+          //clock_phase = 44;	 // 0..63 (0.5 ns step) time offset between
+                             // adc-clock and apv-clock
+        },
+        {
+          gain = [5, 5, 5, 5, 5, 5, 5, 5]; 	// (0...12 dB) gain settings for
+                                            // sub-ch 0, 1, 2, ... 7
+          invert = true;
+          pattern = "none"; // none, sync, deskew, ramp
+          clock_phase = 36;	 // 0..63 (0.5 ns step) 
+         // clock_phase = 44;	 // 0..63 (0.5 ns step) time offset between adc-clock and apv-clock //
+        }
+      );
+
+    apv:
+      (
+// 2018-04-12 Kondo coinfiguration without patch pannel, with HDMI adapter
+//
+	{ adc = 4; i2c = 0; }, // j2m0x0 - rigidx5 (J2-M1: Right-X-4slot-BP shortH_11 to longH_ha07)
+	{ adc = 5; i2c = 1; },
+	{ adc = 6; i2c = 2; },
+	{ adc = 7; i2c = 3; },
+
+	{ adc = 8; i2c = 8; }, // j2m1x0 - flex-v1 not inverted (J2-M0: Right-X-4slot-BP shortH_12 to longH_14)	// NOT SEING THIS APV PROBLEM MISSING
+	{ adc = 9; i2c = 9; },
+	{ adc = 10; i2c = 10; },
+	{ adc = 11; i2c = 11; },
+
+	{ adc = 12; i2c = 16; }, // j2m2x0 - flex-v1 not inverted  (J2-M4: Right-X-4slot-BP shortH_13 to longH_16)
+	{ adc = 13; i2c = 17; },
+	{ adc = 14; i2c = 18; },
+  	{ adc = 15; i2c = 19; }
+      );
+    }
+    //end MPD 11
+
+   ); // end MPDs
+
+  user: // user specific setting (e.g. additional vme module in bus)
+  {
+    ioreg: {
+      model = "v513";
+      pulse_on = -1;  // set to 11 if you want ioreg to generate the pedestal pulse, or -1 for real trigger 
+      pulse_period = 1000; // minimum microseconds between pulses
+    }; // input/output register (veto et al)
+  };
+
+}); // end buses
+
+
+// run parameters
+run:
+{
+
+  file_prefix = "out/test"; // OUTPUT FILENAME prefix
+
+  mode = "process";	// sync, event, histo, sample, process , in mpd ?
+  format = "bin";	// hex, dec, bin
+  histo_time = 1;  // second of acquisition for histogramming
+  histo_channel_start = 0;	// 0 .. 7
+  histo_channel_stop = 7;	// 0 .. 7
+  histo_board_start = 0;	// 0 .. 20
+  histo_board_stop = 0;	// 0 .. 20
+
+  progress_step = 22;
+  time_preset = 600;	// CHANGE ACQUISITION TIME
+  event_preset = 5;	// CHANGE NUMBER OF ACQUIRED EVENTS
+  max_retry =500;	// 0 = disabled
+  info = "Info setting"; // comment on the run
+};

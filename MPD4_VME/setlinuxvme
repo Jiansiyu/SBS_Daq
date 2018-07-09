@@ -1,0 +1,13 @@
+#!/bin/csh
+#
+#  This environment must be changed to match your system
+#  This is a minimalist example
+
+setenv LINUXVME_HOME /home/daq/ben
+setenv LINUXVME_BIN ${LINUXVME_HOME}/bin
+setenv LINUXVME_LIB ${LINUXVME_HOME}/lib
+setenv LINUXVME_INC ${LINUXVME_HOME}/include
+
+setenv LD_LIBRARY_PATH ${LINUXVME_LIB}:${LD_LIBRARY_PATH}
+
+setenv GIT_SSL_NO_VERIFY true
